@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 50% 97%;
+    --foreground: 220 40% 13%;
+
+    --card: 36 40% 99%;
+    --card-foreground: 220 40% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 40% 13%;
+
+    --primary: 220 40% 13%;
+    --primary-foreground: 36 50% 97%;
+
+    --secondary: 36 60% 94%;
+    --secondary-foreground: 220 40% 13%;
+
+    --muted: 36 30% 92%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 45 100% 51%;
+    --accent-foreground: 220 40% 13%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --cta: 8 85% 56%;
+    --cta-foreground: 0 0% 100%;
+
+    --border: 36 20% 88%;
+    --input: 36 20% 88%;
+    --ring: 45 100% 51%;
+
+    --radius: 0.75rem;
+
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 40% 8%;
+    --foreground: 36 50% 97%;
+    --card: 220 35% 12%;
+    --card-foreground: 36 50% 97%;
+    --popover: 220 35% 12%;
+    --popover-foreground: 36 50% 97%;
+    --primary: 36 50% 97%;
+    --primary-foreground: 220 40% 13%;
+    --secondary: 220 30% 18%;
+    --secondary-foreground: 36 50% 97%;
+    --muted: 220 20% 20%;
+    --muted-foreground: 36 20% 65%;
+    --accent: 45 100% 51%;
+    --accent-foreground: 220 40% 13%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --cta: 8 85% 56%;
+    --cta-foreground: 0 0% 100%;
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 45 100% 51%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24;
+  }
+
+  .container-main {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+@layer utilities {
+  @keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes spring-bounce {
+    0% { transform: scaleY(1) scaleX(1); }
+    25% { transform: scaleY(1.15) scaleX(0.92); }
+    50% { transform: scaleY(0.9) scaleX(1.05); }
+    75% { transform: scaleY(1.05) scaleX(0.97); }
+    100% { transform: scaleY(1) scaleX(1); }
+  }
+
+  @keyframes card-jump {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    40% { transform: translateY(-30px) scale(1.05); opacity: 0.5; }
+    60% { transform: translateY(10px) scale(0.95); opacity: 0.5; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .animate-blink {
+    animation: blink 4s infinite;
+    transform-origin: center;
+  }
+
+  .animate-orbit {
+    animation: orbit var(--orbit-duration, 12s) linear infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-spring {
+    animation: spring-bounce 2s ease-in-out infinite;
+  }
+
+  .animate-card-jump {
+    animation: card-jump 0.6s ease-in-out;
+  }
+}
