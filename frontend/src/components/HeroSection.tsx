@@ -8,7 +8,7 @@ import orbSoap from "@/assets/orb (3).png";
 import orbKeychain from "@/assets/orb (2).png";
 import orbClips from "@/assets/orb (4).png";
 import orbBow from "@/assets/orb.png";
-import decoreCloud from "@/assets/decore.png"; // <--- Your new asset
+import decoreCloud from "@/assets/Decore.png"; // <--- Your new asset
 
 // Creating a perfect circle pattern
 const items = [orbSoap, orbKeychain, orbClips, orbBow, orbSoap, orbKeychain, orbClips, orbBow];
