@@ -5,6 +5,7 @@ import soapProduct from "@/assets/soap-product.jpg";
 import keychainProduct from "@/assets/keychain-product.jpg";
 import soapDoodle from "@/assets/soap-doodle.jpg";
 import keychainDoodle from "@/assets/keychain-doodle.jpg";
+import heroGirl from "@/assets/hero-girl.png";
 
 export interface Product {
   id: string;
@@ -47,9 +48,9 @@ export const products: Product[] = [
 ];
 
 export const defaultTestimonials: Testimonial[] = [
-  { id: "1", name: "Priya", location: "Trichy, Tamilnadu", rating: 5, review: "I absolutely love the quality of the products. The clips are stylish and hold perfectly all day. Definitely my go-to store now!" },
-  { id: "2", name: "Rajesh", location: "CEO of Best Buttons", rating: 5, review: "Great products with amazing quality. The keychains are unique and make perfect gifts. Highly recommended!" },
-  { id: "3", name: "Ananya", location: "Chennai, Tamilnadu", rating: 4, review: "The herbal soaps are fantastic! My skin feels so much better. Love the natural ingredients." },
+  { id: "1", name: "Priya", location: "Trichy, Tamilnadu", rating: 5, review: "I absolutely love the quality of the products. The clips are stylish and hold perfectly all day. Definitely my go-to store now!", image: heroGirl },
+  { id: "2", name: "Rajesh", location: "CEO of Best Buttons", rating: 5, review: "Great products with amazing quality. The keychains are unique and make perfect gifts. Highly recommended!", image: heroGirl },
+  { id: "3", name: "Ananya", location: "Chennai, Tamilnadu", rating: 4, review: "The herbal soaps are fantastic! My skin feels so much better. Love the natural ingredients.", image: heroGirl },
 ];
 
 export const productFeatures = [
