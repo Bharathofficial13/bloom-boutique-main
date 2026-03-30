@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import type { Testimonial } from "@/data/products";
+import { defaultTestimonials } from "@/data/products";
 
 const Testimonials = () => {
-  // w Start with an empty array instead of defaultTestimonials
+  // Start with empty array, but sync with localStorage or use defaults
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [current, setCurrent] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -21,7 +22,7 @@ const Testimonials = () => {
     ? { x: 40, y: 70, scale: 0.95, opacity: 1 } 
     : { x: 110, y: 120, scale: 0.9, opacity: 1 };
 
-  // 2. Modified Sync Logic (No default fallbacks)
+  // 2. Modified Sync Logic (uses defaults as fallback)
   useEffect(() => {
     const syncTestimonials = () => {
       try {
@@ -30,10 +31,15 @@ const Testimonials = () => {
           const parsed = JSON.parse(stored) as Testimonial[];
           if (parsed.length > 0) {
             setTestimonials(parsed);
+          } else {
+            setTestimonials(defaultTestimonials);
           }
+        } else {
+          setTestimonials(defaultTestimonials);
         }
       } catch (error) {
         console.error("Failed to load testimonials:", error);
+        setTestimonials(defaultTestimonials);
       } finally {
         setLoading(false);
       }
