@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import type { Testimonial } from "@/data/products";
 
 const Testimonials = () => {
-  // 1. Start with an empty array instead of defaultTestimonials
+  // w Start with an empty array instead of defaultTestimonials
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [current, setCurrent] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
