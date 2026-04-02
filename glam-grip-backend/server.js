@@ -8,7 +8,15 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import multer from "multer";
-import cloudinary from "cloudinary";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
 
 const app = express();
 
@@ -17,11 +25,11 @@ app.use(cors());
 app.use(express.json());
 
 // Configure Cloudinary for image uploads
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
 
 // ============================================
 // DATABASE SCHEMAS
@@ -232,28 +240,35 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 app.post("/api/admin/upload", authenticate, upload.single("file"), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, error: "No file provided" });
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: "No file provided" });
+    }
 
-    const result = await cloudinary.uploader.upload_stream(
-      { resource_type: "auto", folder: "glam-grip" },
-      (error, result) => {
-        if (error) return res.status(500).json({ success: false, error: error.message });
-        res.json({ 
-          success: true, 
-          image: {
-            url: result.secure_url,
-            cloudinaryId: result.public_id,
-          }
-        });
-      }
-    );
+    const file = req.file;
+    const fileName = Date.now() + "-" + file.originalname;
 
-    result.end(req.file.buffer);
+    const command = new PutObjectCommand({
+      Bucket: process.env.S3_BUCKET,
+      Key: fileName,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    });
+
+    await s3.send(command);
+
+    const imageUrl = `https://${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+
+    res.json({
+      success: true,
+      image: {
+        url: imageUrl,
+      },
+    });
+
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
 // ============================================
 // SEARCH & ANALYTICS ENDPOINTS
 // ============================================

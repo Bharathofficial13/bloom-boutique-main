@@ -9,7 +9,7 @@ interface Product {
   category: string;
   description: string;
   didYouKnow: string;
-  image: string;
+  image: any;
   stock?: number;
   rating?: number;
 }
@@ -80,9 +80,7 @@ const loadProducts = async () => {
       body: JSON.stringify({
         ...cleanData,
         // Ensure image is an object to match your Mongoose Schema
-        image: typeof cleanData.image === 'string' 
-          ? { url: cleanData.image, cloudinaryId: "" } 
-          : cleanData.image
+        image: { url: cleanData.image }
       }),
     });
 
@@ -101,9 +99,7 @@ const handleUpdateProduct = async (productId: string, productData: any) => {
 
   try {
     // Ensure image matches the Schema: { url: String, cloudinaryId: String }
-    const formattedImage = typeof productData.image === 'string' 
-      ? { url: productData.image, cloudinaryId: "" } 
-      : productData.image;
+    const formattedImage = { url: productData.image };
 
     const response = await fetch(`http://15.207.223.140/api/admin/products/${productId}`, {
       method: "PUT",
@@ -538,46 +534,84 @@ const ProductFormModal = ({ product, categories, onSubmit, onClose }: any) => {
   );
   const [uploading, setUploading] = useState(false);
 
+// const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//   const file = e.target.files?.[0];
+//   if (!file) return;
+
+//   setUploading(true);
+//   try {
+//     const formData = new FormData();
+//     formData.append("file", file);
+    
+//     // 1. Ensure this matches your UNSIGNED preset name exactly
+//     formData.append("upload_preset", "glamgrip"); 
+//     formData.append("folder", "glam-grip");
+
+//     const response = await fetch(
+//       // 2. CHANGE 'glamgrip' TO 'dzda5ucp5' HERE
+//       "https://api.cloudinary.com/v1_1/dzda5ucp5/image/upload", 
+//       { 
+//         method: "POST", 
+//         body: formData,
+//         headers: {} // Keep this empty to avoid injecting keys
+//       }
+//     );
+
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.error.message);
+//     }
+
+//     const data = await response.json();
+//     setForm({ ...form, image: data.secure_url });
+//     console.log("Upload Success:", data.secure_url);
+
+//   } catch (error: any) {
+//     console.error("Cloudinary Error:", error.message);
+//     alert(`Upload failed: ${error.message}`); 
+//   } finally {
+//     setUploading(false);
+//   }
+// };
 const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file) return;
 
   setUploading(true);
+
   try {
     const formData = new FormData();
     formData.append("file", file);
-    
-    // 1. Ensure this matches your UNSIGNED preset name exactly
-    formData.append("upload_preset", "glamgrip"); 
-    formData.append("folder", "glam-grip");
+
+    const ADMIN_TOKEN = "your_secure_admin_token_123";
 
     const response = await fetch(
-      // 2. CHANGE 'glamgrip' TO 'dzda5ucp5' HERE
-      "https://api.cloudinary.com/v1_1/dzda5ucp5/image/upload", 
-      { 
-        method: "POST", 
+      "http://15.207.223.140/api/admin/upload",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${ADMIN_TOKEN}`,
+        },
         body: formData,
-        headers: {} // Keep this empty to avoid injecting keys
       }
     );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error.message);
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Upload failed");
     }
 
-    const data = await response.json();
-    setForm({ ...form, image: data.secure_url });
-    console.log("Upload Success:", data.secure_url);
+    // ✅ S3 URL
+    setForm({ ...form, image: data.image.url });
 
   } catch (error: any) {
-    console.error("Cloudinary Error:", error.message);
-    alert(`Upload failed: ${error.message}`); 
+    console.error("Upload Error:", error.message);
+    alert("Image upload failed");
   } finally {
     setUploading(false);
   }
 };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(form);

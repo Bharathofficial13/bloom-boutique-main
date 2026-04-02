@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Glam Grip Backend API",
   "main": "server.js",
-  "type": "module", 
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1023.0",
     "cloudinary": "^2.9.0",
     "cloudinary-core": "^2.14.1",
     "cors": "^2.8.6",
