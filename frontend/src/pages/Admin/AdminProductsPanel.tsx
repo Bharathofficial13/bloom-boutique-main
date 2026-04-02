@@ -39,7 +39,7 @@ const AdminProductsPanel = () => {
  // 1. Load Categories (Matches your app.get("/api/categories"))
 const loadCategories = async () => {
   try {
-    const response = await fetch("https://clientkanishka.onrender.com/api/categories");
+    const response = await fetch("http://15.207.223.140/api/categories");
     const data = await response.json();
     // Your backend returns { success: true, categories: [...] }
     setCategories(data.categories || []);
@@ -52,7 +52,7 @@ const loadCategories = async () => {
 const loadProducts = async () => {
   try {
     setLoading(true);
-    const response = await fetch("https://clientkanishka.onrender.com/api/products");
+    const response = await fetch("http://15.207.223.140/api/products");
     const data = await response.json();
     // Your backend returns { success: true, products: [...] }
     setProducts(data.products || []);
@@ -71,7 +71,7 @@ const loadProducts = async () => {
   const { _id, id, ...cleanData } = productData;
 
   try {
-    const response = await fetch("https://clientkanishka.onrender.com/api/admin/products", {
+    const response = await fetch("http://15.207.223.140/api/admin/products", {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
@@ -105,7 +105,7 @@ const handleUpdateProduct = async (productId: string, productData: any) => {
       ? { url: productData.image, cloudinaryId: "" } 
       : productData.image;
 
-    const response = await fetch(`https://clientkanishka.onrender.com/api/admin/products/${productId}`, {
+    const response = await fetch(`http://15.207.223.140/api/admin/products/${productId}`, {
       method: "PUT",
       headers: { 
         "Content-Type": "application/json",
@@ -148,7 +148,7 @@ const handleDeleteProduct = async (productId: string) => {
   const ADMIN_TOKEN = "your_secure_admin_token_123"; 
 
   try {
-    const response = await fetch(`https://clientkanishka.onrender.com/api/admin/products/${productId}`, { 
+    const response = await fetch(`http://15.207.223.140/api/admin/products/${productId}`, { 
       method: "DELETE",
       headers: {
         // ADD THIS: The backend requires the token to allow deletion
@@ -186,7 +186,7 @@ const handleAddCategory = async (catData: { name: string; id: string; icon: stri
   const ADMIN_TOKEN = "your_secure_admin_token_123";
 
   try {
-   const response = await fetch("https://clientkanishka.onrender.com/api/admin/categories", {
+   const response = await fetch("http://15.207.223.140/api/admin/categories", {
   method: "POST",
   headers: { 
     "Content-Type": "application/json", // CRITICAL: Tells Express to parse the body
@@ -225,7 +225,7 @@ const handleDeleteCategory = async (mongoId: string) => {
   const ADMIN_TOKEN = "your_secure_admin_token_123";
 
   try {
-    const response = await fetch(`https://clientkanishka.onrender.com/api/admin/categories/${mongoId}`, {
+    const response = await fetch(`http://15.207.223.140/api/admin/categories/${mongoId}`, {
       method: "DELETE",
       headers: { "Authorization": `Bearer ${ADMIN_TOKEN}` }
     });
