@@ -42,9 +42,9 @@ const ProductCarousel = () => {
     const fetchShopData = async () => {
       try {
         setLoading(true);
-        const catRes = await fetch("http://15.207.223.140/api/categories");
+        const catRes = await fetch("https://glamgrip.co.in/api/categories");
         const catData = await catRes.json();
-        const prodRes = await fetch("http://15.207.223.140/api/products?limit=50");
+        const prodRes = await fetch("https://glamgrip.co.in/api/products?limit=50");
         const prodData = await prodRes.json();
 
         if (catData.success) {

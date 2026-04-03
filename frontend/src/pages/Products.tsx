@@ -21,7 +21,7 @@ const ProductsPage = () => {
   const { data: catData } = useQuery({
   queryKey: ["categories"],
   queryFn: async () => {
-    const response = await fetch("http://15.207.223.140/api/categories");
+    const response = await fetch("https://glamgrip.co.in/api/categories");
     const json = await response.json();
     return json.categories || [];
   }
@@ -40,7 +40,7 @@ const categories = catData || [];
         ...(searchTerm && { search: searchTerm }),
       });
 
-      const response = await fetch(`http://15.207.223.140/api/products?${params}`);
+      const response = await fetch(`https://glamgrip.co.in/api/products?${params}`);
       if (!response.ok) throw new Error("Network response was not ok");
       return response.json(); // Expected: { success: true, products: [], pagination: {} }
     },
